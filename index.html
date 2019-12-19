@@ -13,9 +13,9 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="description" content="">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="Dong Li">
   <meta name="keywords" content="">
-  <title>Hexo</title>
+  <title>Joker&#39;s Blog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -42,7 +42,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>Hexo</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>Joker&#39;s Blog</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -136,22 +136,33 @@
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/18/test/">
-        <p class="h4 index-header">test</p>
+      <a href="/2019/04/17/CS184-Project2%E6%80%BB%E7%BB%93/">
+        <p class="h4 index-header">CS184 Project2总结</p>
         
         
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1"></div>
+          <div class="index-text mb-1">Project2
+
+
+
+前言本次是CS184的第二个project，主要内容是贝塞尔曲线和曲面，样条和曲面细分。包含了CS184 Spring2019课程第八节和第九节。Section1 是关于贝塞尔曲线和曲面的，Section2 是关于三角形mesh的曲面细分。涉及实现贝塞尔曲面的de Casteljau’s 算法。曲面细分需要用到一种图形学相关数据结构，主要是halfedge mesh这种数据结构。参考这篇文章本次所有需要需改的代码均在student_code.cpp这个文件里。
+Section I: Bezier Curves and SurfacesPart 1: Bezier curves with 1D de Casteljau subdivision题目介绍第一部分关于1D de Casteljau算法的实现，这个算法是比较常见的找到贝塞尔曲面上一点的方法。需要修改 BezierCurve::evaluateStep 这个函数，BezierCurve 这个类有一个控制点的vector ，提前会把控制点加载进来。
+实现原理这个算法的原理参见下图，比方说一开始四个控制点（我称</div>
         </div>
       </a>
 
       <div>
         
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-18&nbsp;&nbsp;
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-17&nbsp;&nbsp;
         
         
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6">图形学</a>&nbsp;
+          
         
       </div>
     </div>
@@ -161,31 +172,64 @@
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/18/hello-world/">
-        <p class="h4 index-header">Hello World</p>
+      <a href="/2019/03/18/CS184-Project1%E6%80%BB%E7%BB%93/">
+        <p class="h4 index-header">CS184 Project1总结</p>
         
         
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick StartCreate a new post$ hexo new &quot;My New Post&quot;
-More info: Writing
-Run server$ hexo server
-More info: Server
-Generate static files$ hexo generate
-More info: Generating
-Deploy to remote sites$ hexo deploy
-More info: Deployment
-</div>
+          <div class="index-text mb-1">Project 1: Rasterizer
+
+
+
+前言第一个project的内容覆盖CS184从spring2019第一课到第五课的内容，包含了三角形光栅化绘制，基本的矩阵变换和采样。总共是两个Section，七个part，由于第七个part属于个人自由发挥选做内容。。本人由于懒没有做，因此只有前六个part。Project1采用了CS184教学团队自己开发的GUI和图形库CGL，貌似是在OpenGL上封装了一层。详细的初始化说明请参考README.md。完整的参考实现请访问我的git repo。
+Section I: RasterizationPart 1: Rasterizing single-color triangles题目介绍第一部分是光栅化三角形。这貌似是每个图形学入门课程开始必做的一个练习。在开始之前，建议先看一下这篇文章，讲述了图片如何以数据形式存在于计算机中。本题的目标是给定每个像素点，判断是否在三角形之内，如果是则将传入的颜色赋值给该像素点。只需要修改两个函数。（1）SampleBuffer::fill_color in drawrend.h
+（2）DrawRend</div>
         </div>
       </a>
 
       <div>
         
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-18&nbsp;&nbsp;
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-03-18&nbsp;&nbsp;
         
         
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6">图形学</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/01/01/new2019/">
+        <p class="h4 index-header">2019年的展望</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">新年展望2019年的第一天，写一写对于新的一年的期望。距离我从伯克利(UC Berkeley)回到杭州已经过去了一个礼拜。接下来一月中下旬，面临两场考试，分别是软件工程和工程经济这两门水课。软件工程讲道理应该是一门挺融汇贯通的课程，奈何我们代码量太少，老师教的也不太行，就变成了比较水的课。对于我来说，应付应付考试就好啦。工程经济就更水了，都不想提。明天会去一家小公司面试游戏客户端的开发，希望能够成功。如果成功了，接下来的时间里就可以好好的做游戏开发，学学unity引擎的使用，了解了解游戏公司的开发流程。同时自己也尝试做自己的小游戏demo。说完了流水账的话，回到正题，来说说自己新的一年的展望和计划。
+关于技术和理论知识（1）首先，是学习游戏开发，尤其是客户端这一块，对于unity引擎的使用，做几个自己的小demo，结合几本书。看《游戏编程模式》学学游戏开发中的设计模式。（2）把算法捡起来，用C#刷leetcode的题目，目标是在暑假再次找实习前做完300到400到题目，并且要做好个人的总结。（3）恶补数学，主要是为自己学图形学做准备。打算看完MIT的线性代数视频，并且做一些笔记和习题。</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-01-01&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%9D%82%E8%B0%88">杂谈</a>&nbsp;
+          
         
       </div>
     </div>
@@ -314,7 +358,7 @@ More info: Deployment
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "&nbsp;",
+        "Joker's Blog&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
