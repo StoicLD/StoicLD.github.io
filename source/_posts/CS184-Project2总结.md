@@ -12,6 +12,7 @@ tags:                               #标签
     - 计算机课程
     - 项目总结
 ---
+
 # Project2
 
 <center>
@@ -47,9 +48,11 @@ tags:                               #标签
 ```c++
     std::vector<Vector2D> controlPoints; // The original control points of the Bezier curve
 
-    std::vector< std::vector<Vector2D> > evaluatedLevels; // Levels of points evaluated through de Casteljau                        
+    std::vector< std::vector<Vector2D> > evaluatedLevels; // Levels of points evaluated through de Casteljau
 ```
+
 <br>
+
 这个还蛮简单的，实现代码如下。
 
 ```c++
