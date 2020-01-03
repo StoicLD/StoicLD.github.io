@@ -178,10 +178,10 @@
 <p><code>BezierCurve</code> 类有下面两个<code>vector</code>，<code>evaluatedLevels[0]</code> 就是初始的四个控制点（一阶控制点）,<code>evaluatedLevels[1]</code>就是二阶控制点，依次类推。<br><br></p>
 <pre><code class="c++">    std::vector&lt;Vector2D&gt; controlPoints; // The original control points of the Bezier curve
 
-    std::vector&lt; std::vector&lt;Vector2D&gt; &gt; evaluatedLevels; // Levels of points evaluated through de Casteljau                        </code></pre>
+    std::vector&lt; std::vector&lt;Vector2D&gt; &gt; evaluatedLevels; // Levels of points evaluated through de Casteljau</code></pre>
 <br>
-这个还蛮简单的，实现代码如下。
 
+<p>这个还蛮简单的，实现代码如下。</p>
 <pre><code class="c++">    void BezierCurve::evaluateStep()
     {
         // TODO Part 1.
