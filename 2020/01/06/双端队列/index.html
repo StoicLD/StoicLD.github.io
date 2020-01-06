@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/mamo1.jfif">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="">
+  <meta name="author" content="Dong Li">
+  <meta name="keywords" content="">
+  <title>双端队列 ~ Joker&#39;s Blog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Joker&#39;s Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/city1.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  Monday, January 6th 2020, 9:58 am
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.7k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      7 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="双端队列的两种实现方式"><a href="#双端队列的两种实现方式" class="headerlink" title="双端队列的两种实现方式"></a>双端队列的两种实现方式</h1><h2 id="零，前言"><a href="#零，前言" class="headerlink" title="零，前言"></a>零，前言</h2><p>CS61B第三周的Project1A：</p>
+<p>内容是实现Deque这种双向链表数据结构，底层的实现方式分别是基于内存不连续的<strong>链表</strong>和内存连续的<strong>数组</strong></p>
+<p><a href="https://sp19.datastructur.es/materials/proj/proj1a/proj1a#1-linked-list-deque" target="_blank" rel="noopener">作业链接</a></p>
+<h2 id="一，基于链表的Deque：LinkedListDeque"><a href="#一，基于链表的Deque：LinkedListDeque" class="headerlink" title="一，基于链表的Deque：LinkedListDeque"></a>一，基于链表的Deque：LinkedListDeque</h2><h3 id="实现要求"><a href="#实现要求" class="headerlink" title="实现要求"></a>实现要求</h3><ul>
+<li><p><code>public void addFirst(T item)</code>: Adds an item of type <code>T</code> to the front of the deque.</p>
+</li>
+<li><p><code>public void addLast(T item)</code>: Adds an item of type <code>T</code> to the back of the deque.</p>
+</li>
+<li><p><code>public boolean isEmpty()</code>: Returns true if deque is empty, false otherwise.</p>
+</li>
+<li><p><code>public int size()</code>: Returns the number of items in the deque.</p>
+</li>
+<li><p><code>public void printDeque()</code>: Prints the items in the deque from first to last, separated by a space. Once all the items have been printed, print out a new line.</p>
+</li>
+<li><p><code>public T removeFirst()</code>: Removes and returns the item at the front of the deque. If no such item exists, returns null.</p>
+</li>
+<li><p><code>public T removeLast()</code>: Removes and returns the item at the back of the deque. If no such item exists, returns null.</p>
+</li>
+<li><p><code>public T get(int index)</code>: Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth. If no such item exists, returns null. Must not alter the deque!</p>
+</li>
+<li><p><code>public LinkedListDeque()</code>: Creates an empty linked list deque.</p>
+</li>
+<li><p><code>public LinkedListDeque(LinkedListDeque other)</code>: Creates a deep copy of <code>other</code>. Creating a deep copy means that you create an entirely new <code>LinkedListDeque</code>, with the exact same items as <code>other</code>. However, they should be different objects, i.e. if you change <code>other</code>, the new <code>LinkedListDeque</code> you created should not change as well. (Edit 2/6/2018: A walkthrough that provides a solution for this copy constructor is available at <a href="https://www.youtube.com/watch?v=JNroRiEG7U4" target="_blank" rel="noopener">https://www.youtube.com/watch?v=JNroRiEG7U4</a>)</p>
+</li>
+<li><p><code>public T getRecursive(int index)</code>: Same as get, but uses recursion.</p>
+</li>
+</ul>
+<h3 id="思想和注意要点"><a href="#思想和注意要点" class="headerlink" title="思想和注意要点"></a>思想和注意要点</h3><p>第一种基于链表的实现，因为是双向链表，而且为了避免一些corner case，所以添加了一个<code>sentinelnote</code> ，就是一个哨兵节点或者叫做哑节点。这个节点自身不存有任何的信息，只有一个next和prev分别指向下一个节点（一般是头节点）和前一个节点（一般是尾节点）。如下图所示</p>
+<p><img src="https://raw.githubusercontent.com/StoicLD/Photos/master/Other/20200105190807.png" srcset="/img/loading.gif" alt=""></p>
+<p>总的来说实现起来没有多大的困难（当然我好久没写代码了，写了好久555</p>
+<p>需要注意的是添加删除节点时候的一些关系，比方说下面这个向头部添加一个节点</p>
+<pre><code class="java">    public void addFirst(T item)
+    {
+        Node rest = sentinelNode.next;
+        Node newFirstNode = new Node(sentinelNode, item, rest);
+        sentinelNode.next = newFirstNode;
+        if(rest != null) {
+            rest.prev = sentinelNode.next;
+        }
+        else {
+            //只有一个节点的时候，新创建的节点的下一个和上一个节点都是senti
+            newFirstNode.next = sentinelNode;
+            sentinelNode.prev = newFirstNode;
+        }
+        size++;
+    }</code></pre>
+<p>事实上，如果<code>sentinelNode</code>一开始<code>size=0</code>的时候<code>prev</code>和<code>next</code>都指向自身，代码可以简化，不需要有<code>sentinelNode.next</code>判断为null的特殊情况。</p>
+<pre><code class="java">    public void addFirst(T item) {
+        Node node = new Node(sentinel, item, sentinel.next);
+        sentinel.next.prev = node;
+        sentinel.next = node;
+        size += 1;
+    }</code></pre>
+<h2 id="二，基于数组的Deque：ArrayDeque"><a href="#二，基于数组的Deque：ArrayDeque" class="headerlink" title="二，基于数组的Deque：ArrayDeque"></a>二，基于数组的Deque：ArrayDeque</h2><p>同样是实现双向链表，只是底层的数据结构是数组，这个难度我认为大一点。由于实现的函数与上面一样，都有在头部和尾部添加节点以及删除节点的行为。所以我们把整个数组看成是环状数组。靠两个下标<code>headIndex</code>和<code>tailIndex</code>来记录当前头部位置和尾部位置。</p>
+<p><img src="https://raw.githubusercontent.com/StoicLD/Photos/master/Other/20200105192640.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="头部和尾部指针-下标-索引"><a href="#头部和尾部指针-下标-索引" class="headerlink" title="头部和尾部指针/下标/索引"></a>头部和尾部指针/下标/索引</h3><p>一个难点是当往头部或者尾部插入节点时，<code>headIndex</code>和<code>tailIndex</code>应该怎么移动的问题。一开始我设想了很多种corner case，但实际上只要加一再对数组容量取余或者减一取余就可以了。其实只有两种情况，一种是head小于tail，另一种则是head大于tail。</p>
+<p>比方说一开始只往尾部添加，不断地调用<code>addLast()</code>，那么就如下所示。head在tail左侧</p>
+<p><img src="https://raw.githubusercontent.com/StoicLD/Photos/master/Other/20200105193921.png" srcset="/img/loading.gif" alt=""></p>
+<p>但也有可能如下所示，先<code>addFirst</code>然后再<code>addLast</code></p>
+<p><img src="https://raw.githubusercontent.com/StoicLD/Photos/master/Other/20200105194740.png" srcset="/img/loading.gif" alt=""></p>
+<p>总之，只有这两种情况。如果我们把整个数组看成一个收尾连接的圆环（实际上我们实现的效果就是这样的），那么head的增长方向和tail的增长方向都是不变且相反的。如上图所示，head一直向“左”走，而tail一直向“右”走。只不过当他们各自抵达数组的真实头尾时会从另一边开始继续走。</p>
+<p>因此代码如下（先不管扩容部分）</p>
+<pre><code class="java">    public void addFirst(T item)
+    {
+        if(size + 1 &gt; capacity)
+        {
+            //扩容一倍
+            scale(FACTOR);
+        }
+        if (size != 0) {
+            headIndex = (headIndex + capacity - 1) % capacity;
+        }
+        items[headIndex] = item;
+        size++;
+    }</code></pre>
+<pre><code class="java">    public void addLast(T item)
+    {
+        if(size + 1 &gt; capacity)
+        {
+            //扩容一倍
+            scale(FACTOR);
+        }
+        if(size != 0) {
+            tailIndex = (tailIndex + capacity + 1) % capacity;
+        }
+        //当tailIndex和headIndex重合时，就是0个元素
+        items[tailIndex] = item;
+        size++;
+    }</code></pre>
+<h3 id="扩容和缩容"><a href="#扩容和缩容" class="headerlink" title="扩容和缩容"></a>扩容和缩容</h3><p>由于底层的数据结构是数组，因此我们一开始分配的空间是一定的。如果我们持续不断的添加元素，数组就势必要扩容。而删除元素到一定程度，为了节省空间则需要缩容。扩容感觉很自然，毕竟装不下了就要扩容，天经地义。那缩容的必要性呢？</p>
+<p>考虑一种情况，先插入1万个元素，然后再删除9999个元素，只剩下一个元素。但是现在的数组却因为之前的扩容而占据了1万个元素的空间。</p>
+<p>因此我们需要缩容，并且指定一个标准，比方说当前元素个数占据总容量的四分之一以下的时候，缩容一半。代码如下</p>
+<pre><code class="java">    public void scale(int multiple)
+    {
+        if(multiple &lt; 1)
+            return;
+        T[] scaledItems = (T[])new Object[capacity * multiple];
+        //拷贝的时候应该分为两种情况
+        //（1）head在左侧，tail在右侧，这就是正常顺序
+        //（2）tail在左侧，head在右侧，这是一端超过末尾了
+        if(headIndex &lt; tailIndex) {
+            System.arraycopy(items, headIndex, scaledItems, 0, tailIndex - headIndex + 1);
+        }
+        else {
+            //复制从第headIndex元素到线型数组最后一个下标所在的元素
+            //复制从第0个下标对应元素到tailIndex（应该是headIndex - 1）的所有元素
+            System.arraycopy(items, headIndex, scaledItems, 0, capacity - headIndex);
+            System.arraycopy(items, 0, scaledItems, capacity - headIndex, tailIndex + 1);
+        }
+        items = scaledItems;
+        capacity *= multiple;
+        criticalValue = capacity / 4;       //只有在每次扩容和缩容时计算一次临界值，这样每次只要和临界值比大小就可以了
+        //重置头尾节点
+        headIndex = 0;
+        tailIndex = size - 1;
+    }</code></pre>
+<pre><code class="java">public void descale(int shrink)
+{
+    if(shrink &lt; 1)
+        return;
+    //缩容通常是2倍缩小
+    T[] scaledItems = (T[])new Object[capacity / shrink];
+    if(headIndex &lt; tailIndex) {
+        // 无论缩容还是扩容，都不会出现headIndex和tailIndex重合的情况（这两者只有size = 0时候才会重合）
+        System.arraycopy(items, headIndex, scaledItems, 0, tailIndex - headIndex + 1);
+    }
+    else {
+        System.arraycopy(items, headIndex, scaledItems, 0, capacity - headIndex);
+        System.arraycopy(items, 0, scaledItems, capacity - headIndex, tailIndex + 1);
+    }
+    items = scaledItems;
+    capacity /= shrink;
+    criticalValue = capacity / 4;       //只有在每次扩容和缩容时计算一次临界值，这样每次只要和临界值比大小就可以了
+
+    //重置头尾节点
+    headIndex = 0;
+    tailIndex = size - 1;
+}</code></pre>
+<h2 id="三，总结"><a href="#三，总结" class="headerlink" title="三，总结"></a>三，总结</h2><p>这次Project算是重新让我温故了一下链表，以及好久没写过的Java（我甚至好久没写代码了。。。）。深感写代码的人还是需要熟能生巧，我大一的时候甚至都可能比现在写到更快更熟练。总之接下来就是一个字 “练”。</p>
+<h2 id="四，参考资料与相关链接"><a href="#四，参考资料与相关链接" class="headerlink" title="四，参考资料与相关链接"></a>四，参考资料与相关链接</h2><p>【1】<a href="https://github.com/StoicLD/CS61B-Spring2019/blob/master/proj1a/LinkedListDeque.java" target="_blank" rel="noopener">实现代码</a></p>
+<p>【2】<a href="https://docs.google.com/presentation/d/1LGQeMHb8-HFKdvJi5nGKRIPZt4on18fZe-cIyTJv8_4/edit#slide=id.g625dc7e36_00" target="_blank" rel="noopener">CS61B Lecture4 slides</a></p>
+<p>【3】<a href="https://sp19.datastructur.es/materials/proj/proj1a/proj1a#1-linked-list-deque" target="_blank" rel="noopener">Project1A</a></p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/CS61B">CS61B</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/CS61B">CS61B</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E9%93%BE%E8%A1%A8">链表</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "双端队列&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
